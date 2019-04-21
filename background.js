@@ -7,12 +7,7 @@
       let alarmName = alarmNamePrefix + tabId;
       let isTargetUrl = tab.url.includes("https://twitter.com/");
       if(isTargetUrl){
-        if(alarmDict[alarmName]){
-          if(tab.url != alarmDict[alarmName].url){
-            chrome.alarms.create(alarmName, { "periodInMinutes": periodInMinutes });
-            alarmDict[alarmName] = { url: tab.url, tabId: tabId };
-          }
-        }else{
+        if(!alarmDict[alarmName]){
           chrome.alarms.create(alarmName, { "periodInMinutes": periodInMinutes });
           alarmDict[alarmName] = { url: tab.url, tabId: tabId };
         }
@@ -20,6 +15,7 @@
         chrome.alarms.clear(alarmName);
         delete alarmDict[alarmName];
       }
+
   });
 
   chrome.tabs.onRemoved.addListener(function(tabId, changeInfo) {
